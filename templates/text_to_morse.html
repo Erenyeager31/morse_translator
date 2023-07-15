@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/ttom.css">
+{% endblock style %}
+
+{% block content %}
+<form action="ttom" method="post">
+    {% csrf_token %}
+    <div class="container1">
+        <p>TEXT TO MORSE CODE</p>
+    <div class="textinput">
+        <textarea placeholder="Enter a text here to convert into Morse code" rows="8" type="text" class="texti" name="texti"></textarea>
+    </div>
+    <div class="textoutput">
+        <textarea rows="8" type="text" class="texto" readonly >{{value}}</textarea>
+    </div>
+    </div>
+    <div class="submit">
+        <input type="submit" class="submitb"></input>
+    </div>
+</form>
+
+{% endblock content %}
