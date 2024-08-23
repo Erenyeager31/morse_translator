@@ -5,20 +5,47 @@
 {% endblock style %}
 
 {% block content %}
-<form action="ttom" method="post">
+<form id="morseForm" method="post">
     {% csrf_token %}
     <div class="container1">
         <p>TEXT TO MORSE CODE</p>
-    <div class="textinput">
-        <textarea placeholder="Enter a text here to convert into Morse code" rows="8" type="text" class="texti" name="texti"></textarea>
-    </div>
-    <div class="textoutput">
-        <textarea rows="8" type="text" class="texto" readonly >{{value}}</textarea>
-    </div>
+        <div class="textinput">
+            <textarea placeholder="Enter a text here to convert into Morse code" rows="8" type="text" class="texti" name="texti">{{ request.POST.texti }}</textarea>
+        </div>
+        <div class="textoutput">
+            <textarea rows="8" type="text" class="texto" readonly>{{ value }}</textarea>
+        </div>
     </div>
     <div class="submit">
-        <input type="submit" class="submitb"></input>
+        <button type="button" class="submitb" onclick="submitForm()">Convert</button>
     </div>
 </form>
+
+<script>
+function submitForm() {
+    const form = document.getElementById('morseForm');
+    const formData = new FormData(form);
+
+    fetch("ttom", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        },
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, 'text/html');
+        
+        // Update the textarea with the new value
+        document.querySelector('.texto').value = doc.querySelector('.texto').value;
+        
+        // Retain the input text
+        document.querySelector('.texti').value = doc.querySelector('.texti').value;
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 
 {% endblock content %}

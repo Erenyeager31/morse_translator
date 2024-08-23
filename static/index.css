@@ -2,3 +2,12 @@
     width: 100%;
     display: block;
 }
+
+.container-center {
+    padding: 20px; /* Adjust the padding value as needed */
+    box-sizing: border-box; /* Ensures that padding is included in the element's total width and height */
+}
+
+.abtbox{
+    color:wheat
+}
